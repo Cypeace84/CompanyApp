@@ -1,9 +1,17 @@
 const express = require('express');
 const router = express.Router();
 // const db = require('./../db');
-const ObjectId = require('mongodb').ObjectId;
-const Department = require('../models/department.model');
+// const ObjectId = require('mongodb').ObjectId;
+// const Department = require('../models/department.model');
+const DepartmentMethod = require('../methods/department.methods');
 
+router.get('/departments', DepartmentMethod.getAll);
+router.get('/departments/random', DepartmentMethod.getRandom);
+router.get('/departments/:id', DepartmentMethod.getById);
+router.post('/departments', DepartmentMethod.createDepartment);
+router.put('/departments/:id', DepartmentMethod.updateDepartment);
+router.delete('/departments/:id', DepartmentMethod.delete);
+////////////////////////////// methods/////////////////////////////
 // router.get('/departments', (req, res) => {
 //   res.json(db.departments);
 // });
@@ -22,13 +30,13 @@ const Department = require('../models/department.model');
 
 /// Mongoose ///
 
-router.get('/departments', async (req, res) => {
-  try {
-    res.json(await Department.find());
-  } catch (err) {
-    res.status(500).json({ message: err });
-  }
-});
+// router.get('/departments', async (req, res) => {
+//   try {
+//     res.json(await Department.find());
+//   } catch (err) {
+//     res.status(500).json({ message: err });
+//   }
+// });
 
 /////////////////////////***********************////////////////////////////////
 
@@ -47,17 +55,17 @@ router.get('/departments', async (req, res) => {
 //     });
 // });
 
-router.get('/departments/random', async (req, res) => {
-  try {
-    const count = await Department.countDocuments();
-    const rand = Math.floor(Math.random() * count);
-    const dep = await Department.findOne().skip(rand);
-    if (!dep) res.status(404).json({ message: 'Not found' });
-    else res.json(dep);
-  } catch (err) {
-    res.status(500).json({ message: err });
-  }
-});
+// router.get('/departments/random', async (req, res) => {
+//   try {
+//     const count = await Department.countDocuments();
+//     const rand = Math.floor(Math.random() * count);
+//     const dep = await Department.findOne().skip(rand);
+//     if (!dep) res.status(404).json({ message: 'Not found' });
+//     else res.json(dep);
+//   } catch (err) {
+//     res.status(500).json({ message: err });
+//   }
+// });
 /////////////////////////***********************////////////////////////////////
 
 // router.get('/departments/:id', (req, res) => {
@@ -74,15 +82,15 @@ router.get('/departments/random', async (req, res) => {
 //     });
 // });
 
-router.get('/departments/:id', async (req, res) => {
-  try {
-    const dep = await Department.findById(req.params.id);
-    if (!dep) res.status(404).json({ message: 'Not found' });
-    else res.json(dep);
-  } catch (err) {
-    res.status(500).json({ message: err });
-  }
-});
+// router.get('/departments/:id', async (req, res) => {
+//   try {
+//     const dep = await Department.findById(req.params.id);
+//     if (!dep) res.status(404).json({ message: 'Not found' });
+//     else res.json(dep);
+//   } catch (err) {
+//     res.status(500).json({ message: err });
+//   }
+// });
 /////////////////////////***********************////////////////////////////////
 
 // router.post('/departments', (req, res) => {
@@ -99,16 +107,16 @@ router.get('/departments/:id', async (req, res) => {
 //   });
 // });
 
-router.post('/departments', async (req, res) => {
-  try {
-    const { name } = req.body;
-    const newDepartment = new Department({ name: name });
-    await newDepartment.save();
-    res.json({ message: 'OK' });
-  } catch (err) {
-    res.status(500).json({ message: err });
-  }
-});
+// router.post('/departments', async (req, res) => {
+//   try {
+//     const { name } = req.body;
+//     const newDepartment = new Department({ name: name });
+//     await newDepartment.save();
+//     res.json({ message: 'OK' });
+//   } catch (err) {
+//     res.status(500).json({ message: err });
+//   }
+// });
 /////////////////////////***********************////////////////////////////////
 
 // router.put('/departments/:id', (req, res) => {
@@ -150,24 +158,24 @@ router.post('/departments', async (req, res) => {
 //   }
 // });
 
-router.put('/departments/:id', async (req, res) => {
-  const { name } = req.body;
+// router.put('/departments/:id', async (req, res) => {
+//   const { name } = req.body;
 
-  try {
-    const dep = await Department.findByIdAndUpdate(
-      req.params.id,
-      { name: name },
-      { new: true }
-    );
-    if (dep) {
-      res.json(dep);
-    } else {
-      res.status(404).json({ message: 'Not found...' });
-    }
-  } catch (err) {
-    res.status(500).json({ message: err });
-  }
-});
+//   try {
+//     const dep = await Department.findByIdAndUpdate(
+//       req.params.id,
+//       { name: name },
+//       { new: true }
+//     );
+//     if (dep) {
+//       res.json(dep);
+//     } else {
+//       res.status(404).json({ message: 'Not found...' });
+//     }
+//   } catch (err) {
+//     res.status(500).json({ message: err });
+//   }
+// });
 /////////////////////////***********************////////////////////////////////
 
 // router.delete('/departments/:id', (req, res) => {
@@ -196,17 +204,17 @@ router.put('/departments/:id', async (req, res) => {
 //   }
 // });
 
-router.delete('/departments/:id', async (req, res) => {
-  try {
-    const dep = await Department.findByIdAndDelete(req.params.id);
-    if (dep) {
-      res.json(dep);
-    } else {
-      res.status(404).json({ message: 'Not found...' });
-    }
-  } catch (err) {
-    res.status(500).json({ message: err });
-  }
-});
+// router.delete('/departments/:id', async (req, res) => {
+//   try {
+//     const dep = await Department.findByIdAndDelete(req.params.id);
+//     if (dep) {
+//       res.json(dep);
+//     } else {
+//       res.status(404).json({ message: 'Not found...' });
+//     }
+//   } catch (err) {
+//     res.status(500).json({ message: err });
+//   }
+// });
 
 module.exports = router;
